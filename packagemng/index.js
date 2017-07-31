@@ -1,12 +1,43 @@
 #!/usr/bin/env node
 
-var http = require('http');
+var express = require('express');
+var app = express();
+var fs = require('fs');
+var oscmd = require('./oscmdexecuter');
 
-http.createServer(function (req, res) {
+app.get('/listUsers', function (req, res) {
+    fs.readFile(__dirname + '/' + 'users.json', 'utf8', function (err, data) {
+        console.log(data);
+        res.end(data);
+    });
+});
 
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('Hello World\n');
-    
-}).listen(9080, "127.0.0.1");
+app.get('/getGitUser', function (req, res) {
+    oscmd.getGitUser(function (data) {
+        console.log(data);
+        res.end(JSON.stringify(data));
+    });
+});
 
-console.log('Server running at http://127.0.0.1:9080/');
+app.get('/getOsName', function (req, res) {
+    oscmd.getOsName(function (data) {
+        console.log(data);
+        res.end(JSON.stringify(data));
+    });
+});
+
+app.get('/getRamInfo', function (req, res) {
+    oscmd.getRamInfo(function (data) {
+        console.log(data);
+        res.end(JSON.stringify(data));
+    });
+});
+
+var server = app.listen(9080, function () {
+
+    var host = server.address().address
+    var port = server.address().port
+
+    console.log('Example app listening at http://%s:%s', host, port)
+
+});
