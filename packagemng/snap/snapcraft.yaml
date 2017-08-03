@@ -1,0 +1,19 @@
+name: packagemng
+version: '1.0.2'
+summary: packagemng
+description: |
+  This is packagemng application
+grade: stable
+confinement: devmode
+
+apps:
+  node-service:
+    command: bin/packagemng
+    daemon: simple
+    restart-condition: always
+    plugs: [network-bind]
+
+parts:
+  webserver:
+    source: .
+    plugin: nodejs

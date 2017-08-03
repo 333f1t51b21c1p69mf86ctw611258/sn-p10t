@@ -33,6 +33,58 @@ app.get('/getRamInfo', function (req, res) {
     });
 });
 
+app.get('/getSnapModuleList', function (req, res) {
+    oscmd.getSnapModuleList(function (data) {
+        var tmp = data.cmdresult;
+        console.log(tmp);
+
+        var find = '\n';
+        var re = new RegExp(find, 'g');
+
+        var lines = tmp.replace(re, ';').split(";");
+
+        lines.splice(0, 1);
+        lines.splice(lines.length - 1, 1);
+
+        console.log("### LENGTH: " + lines.length);
+
+        res.end(JSON.stringify(lines));
+    });
+});
+
+app.get('/getSnapInfo/:snap', function (req, res) {
+    var snap = req.params.snap;
+
+    oscmd.getSnapInfo(snap, function (data) {
+        var snapInfo = data;
+        console.log(snapInfo);
+
+        res.end(snapInfo);
+    });
+});
+
+app.get('/installSnap/:snap', function (req, res) {
+    var snap = req.params.snap;
+
+    oscmd.installSnap(snap, function (data) {
+        var snapInfo = data;
+        console.log(snapInfo);
+
+        res.end(snapInfo);
+    });
+});
+
+app.get('/removeSnap/:snap', function (req, res) {
+    var snap = req.params.snap;
+
+    oscmd.removeSnap(snap, function (data) {
+        var snapInfo = data;
+        console.log(snapInfo);
+
+        res.end(snapInfo);
+    });
+});
+
 var server = app.listen(9080, function () {
 
     var host = server.address().address

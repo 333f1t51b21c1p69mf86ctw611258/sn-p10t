@@ -29,3 +29,29 @@ module.exports.getRamInfo = function (callback) {
         );
     });
 }
+
+module.exports.getSnapModuleList = function (callback) {
+    executeOsCommand('snap list', function (result) {
+        callback(
+            { cmdresult: result }
+        );
+    });
+}
+
+module.exports.getSnapInfo = function (snap, callback) {
+    executeOsCommand('snap info ' + snap, function (result) {
+        callback(result);
+    });
+}
+
+module.exports.installSnap = function (snap, callback) {
+    executeOsCommand('sudo snap install ' + snap, function (result) {
+        callback(result);
+    });
+}
+
+module.exports.removeSnap = function (snap, callback) {
+    executeOsCommand('sudo snap remove ' + snap, function (result) {
+        callback(result);
+    });
+}
